@@ -87,3 +87,92 @@ The final response should include:
 
 Keep responses concise, factual, and relevant to the requested task.
 Do not claim work that was not actually performed.
+
+## 7. Documentation & Knowledge Protocol
+
+Project knowledge must be stored inside the repository and must not exist
+only inside conversations with AI agents.
+
+Before starting a task:
+
+- Read `AGENTS.md`.
+- Check `docs/GLOSSARY.md` for project-specific terminology.
+- Check `docs/DECISIONS.md` for relevant existing decisions.
+- Check other documentation when it is relevant to the task.
+
+During a task:
+
+- Follow existing project decisions and terminology.
+- Do not create a new rule if an existing rule already covers the situation.
+- Identify important new decisions, observations, and lessons.
+
+After completing a task:
+
+- Update `docs/CHANGELOG.md` when the project has meaningfully changed.
+- Update `docs/DECISIONS.md` when an important technical or process decision was made.
+- Update `docs/GLOSSARY.md` when new shared terminology is introduced.
+- Update `docs/LESSONS.md` when an experiment produces a useful observation.
+- Update `docs/RESEARCH.md` when new external research is introduced.
+- Update `docs/INFLUENCES.md` when an external engineering influence is added or changed.
+
+Do not update documentation unnecessarily.
+
+Documentation changes must reflect actual work, decisions, research,
+or observations.
+## 8. Knowledge Classification & Rule Promotion
+
+Not every observation or decision should become a permanent project rule.
+
+Classify new knowledge as:
+
+- SPECIFIC
+- GENERAL
+- CANDIDATE RULE
+- PROMOTED RULE
+
+SPECIFIC knowledge should remain in the relevant documentation.
+
+GENERAL knowledge may be considered for reuse across tasks or projects.
+
+A CANDIDATE RULE must be evaluated before becoming a permanent rule.
+
+A rule should be promoted into `AGENTS.md` only when there is sufficient
+evidence that it is broadly useful.
+
+The preferred knowledge lifecycle is:
+
+Research or Experiment
+→ Observation
+→ Lesson
+→ Candidate Rule
+→ Evaluation
+→ Decision
+→ Promoted Rule
+
+Do not promote rules only because an expert, AI model, or external source
+suggested them.
+
+Prefer evidence from repeated experiments and practical usefulness.
+## 9. Definition of Done
+
+A task is not DONE only because code was written.
+
+Before reporting a task as COMPLETE, confirm:
+
+- The requested goal has been implemented.
+- The change remains within the intended scope.
+- Relevant verification has been performed.
+- Failed or unavailable verification has been reported.
+- Relevant documentation has been updated.
+- Important decisions have been recorded.
+- Important lessons or observations have been recorded when applicable.
+- No known unresolved blocker is being hidden.
+
+If these conditions are not satisfied, report the task as:
+
+- IN PROGRESS
+- NEEDS VERIFICATION
+- PARTIALLY COMPLETE
+- BLOCKED
+
+Do not report COMPLETE unless the Definition of Done is satisfied.
