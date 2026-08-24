@@ -120,3 +120,51 @@ Claude Code installation: COMPLETE
 Documentation system: IN PROGRESS
 
 AI agent comparison experiments: NOT STARTED
+---
+
+## Phase 7 - Agent Evaluation System
+
+### Added Evaluation Framework
+
+Created the `evals/` directory to measure whether AI coding agents
+follow the project's engineering standards.
+
+Added:
+
+- `evals/README.md`
+- `evals/EVAL-001.md`
+- `evals/EVAL-002.md`
+- `evals/EVAL-003.md`
+- `evals/SCORING.md`
+
+### Evaluation Areas
+
+The evaluation system measures:
+
+- task correctness,
+- scope discipline,
+- simplicity and code quality,
+- verification and testing,
+- documentation and knowledge management,
+- communication,
+- Definition of Done compliance.
+
+### Scoring
+
+A common 100-point scoring system was introduced so that different
+AI coding agents can be evaluated using the same criteria.
+
+### Purpose
+
+The project should not assume that written AI rules are effective.
+
+Agent behavior must be tested, observed, and measured before rules
+are considered successful.
+
+### Current Status
+
+Evaluation framework: COMPLETE
+
+Evaluation scenarios designed: COMPLETE
+
+Live agent evaluations: NOT RUN
