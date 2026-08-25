@@ -216,3 +216,21 @@ DEC-007
 
 **Next Action:**
 Repeat the experiment with multiple agents.
+## Lesson: Documentation paths must be consistent
+
+During the first live agent evaluation, the evaluation command expected
+`docs/DECISIONS.md`, but the actual file was named `docs/DESICIONS.md`.
+
+This caused part of the project context to be unavailable to the agent.
+
+### Learning
+
+Agent infrastructure depends on consistent file names and documentation paths.
+A small naming mismatch can prevent an agent from receiving important project context.
+
+### Action
+
+The file was renamed from `DESICIONS.md` to `DECISIONS.md`.
+
+Future evaluation runs should verify that all required context files exist
+before invoking the agent.
