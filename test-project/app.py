@@ -1,5 +1,5 @@
 def greet_user(name):
-    return "Hello " + name
+    return f"Hello {name}"
 
 
 def calculate_total(price, quantity):
