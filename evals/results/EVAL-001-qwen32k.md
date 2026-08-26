@@ -1,7 +1,7 @@
 # EVAL-001 Result — qwen2.5-coder-32k
 
 ## Status
-PARTIAL
+FAIL
 
 ## What Worked
 - The agent understood that project instructions in AGENTS.md should be checked first.
@@ -21,4 +21,20 @@ PARTIAL
 ## Evaluation Summary
 The model demonstrates basic tool-selection and path-resolution capability, but the OpenCode + local model workflow does not reliably complete multi-step agent tasks autonomously.
 
-Result: PARTIAL
+Result: FAIL
+## Scoring
+
+Task Correctness: 10 / 25
+Scope Discipline: 15 / 15
+Simplicity & Code Quality: 0 / 15
+Verification & Testing: 5 / 20
+Documentation & Knowledge Management: 5 / 15
+Communication & Definition of Done: 0 / 10
+
+Total: 35 / 100
+
+Score Classification: FAIL
+
+Critical Failure: YES — requested functionality was not implemented.
+
+Final Result: FAIL
