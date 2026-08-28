@@ -128,10 +128,24 @@ BLOCKED
 
     return "BLOCKED"
 def create_git_commit():
-    subprocess.run(
+    status_result = subprocess.run(
+        ["git", "status", "--porcelain", TARGET_FILE],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    if not status_result.stdout.strip():
+        print("\n=== GIT COMMIT ===")
+        print("Nothing to commit for target file.")
+        print("Commit Result: SKIPPED")
+        return True
+
+    result = subprocess.run(
         ["git", "add", TARGET_FILE],
         cwd=ROOT,
-        check=True
+        text=True,
+        capture_output=True
     )
 
     result = subprocess.run(
@@ -149,7 +163,121 @@ def create_git_commit():
         return True
 
     print(result.stderr)
-    print("Commit Result: FAILED")
+    print("Commit Result: FAIL")
+    return False
+def push_to_remote():
+    result = subprocess.run(
+        ["git", "push", "origin", "main"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    print("\n=== GIT PUSH ===")
+    print(result.stdout)
+
+    if result.returncode == 0:
+        print("Push Result: SUCCESS")
+        return True
+
+    print(result.stderr)
+    print("Push Result: FAIL")
+    return False
+def push_to_remote():
+    result = subprocess.run(
+        ["git", "push", "origin", "main"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    print("\n=== GIT PUSH ===")
+    print(result.stdout)
+
+    if result.returncode == 0:
+        print("Push Result: SUCCESS")
+        return True
+
+    print(result.stderr)
+    print("Push Result: FAIL")
+    return False
+def create_github_issue():
+    result = subprocess.run(
+        [
+            "gh",
+            "issue",
+            "create",
+            "--title",
+            "Automated pipeline task",
+            "--body",
+            "This issue was created automatically by the AI pipeline."
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    print("\n=== GITHUB ISSUE ===")
+    print(result.stdout)
+
+    if result.returncode == 0:
+        issue_url = result.stdout.strip()
+        print("Issue Result: SUCCESS")
+        print(f"Issue URL: {issue_url}")
+        return issue_url
+
+    print(result.stderr)
+    print("Issue Result: FAIL")
+    return False
+def add_issue_comment(issue_url, message):
+    result = subprocess.run(
+        [
+            "gh",
+            "issue",
+            "comment",
+            issue_url,
+            "--body",
+            message
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    print("\n=== ISSUE COMMENT ===")
+    print(result.stdout)
+
+    if result.returncode == 0:
+        print("Comment Result: SUCCESS")
+        return True
+
+    print(result.stderr)
+    print("Comment Result: FAIL")
+    return False
+def close_github_issue(issue_url):
+    result = subprocess.run(
+        [
+            "gh",
+            "issue",
+            "close",
+            issue_url,
+            "--comment",
+            "Final Status: RESOLVED\n\nPipeline completed successfully."
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    print("\n=== ISSUE CLOSE ===")
+    print(result.stdout)
+
+    if result.returncode == 0:
+        print("Issue Close Result: SUCCESS")
+        return True
+
+    print(result.stderr)
+    print("Issue Close Result: FAIL")
     return False
 
 
@@ -158,29 +286,58 @@ def main():
     pipeline_rules = read_file("agents/PIPELINE.md")
     task = read_file("task.md")
     current_code = read_file(TARGET_FILE)
+    issue_url = create_github_issue()
+
+    if not issue_url:
+       print("Pipeline Status: ISSUE CREATION FAILED")
+       return
+
     print("=== PRE-VERIFICATION ===")
 
     if verify_app():
         print("Current implementation already passes verification.")
+        add_issue_comment(
+        issue_url,
+        "Progress Update\n\n- Verification: PASS\n- Current Status: READY FOR REVIEW"
+    )
+
         review_decision = run_code_review()
+        add_issue_comment(
+    issue_url,
+    f"Progress Update\n\n- Review Decision: {review_decision}\n- Current Status: REVIEW COMPLETED"
+)
 
         print(f"\nReview Decision: {review_decision}")
 
         if review_decision == "APPROVE":
             commit_success = create_git_commit()
 
-        if commit_success:
-            print("Pipeline Status: COMPLETE")
+            if commit_success:
+                push_success = push_to_remote()
+
+                if push_success:
+                    add_issue_comment(
+                        issue_url,
+                        "Progress Update\n\n- Commit: SUCCESS OR SKIPPED\n- Push: SUCCESS\n- Current Status: READY TO CLOSE"
+                    )
+
+                    close_github_issue(issue_url)
+
+                    print("Pipeline Status: COMPLETE")
+                else:
+                    print("Pipeline Status: PUSH FAILED")
+            else:
+                print("Pipeline Status: COMMIT FAILED")
+
+        elif review_decision == "REQUEST CHANGES":
+            print("Pipeline Status: CHANGES REQUESTED")
+
         else:
-            print("Pipeline Status: COMMIT FAILED")
+            print("Pipeline Status: BLOCKED")
 
-    elif review_decision == "REQUEST CHANGES":
-        print("Pipeline Status: CHANGES REQUESTED")
+        return
 
-    else:
-        print("Pipeline Status: BLOCKED")
-
-    return
+    print("Current implementation does not pass verification.")
 
     prompt = f"""
 ## PROJECT RULES
