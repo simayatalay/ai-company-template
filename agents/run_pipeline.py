@@ -23,7 +23,112 @@ def run_qwen(prompt):
         raise RuntimeError(result.stderr)
 
     return result.stdout
+def run_coding_agent(task, current_code):
+    coding_rules = read_file("agents/CODING_AGENT.md")
+    project_rules = read_file("AGENTS.md")
 
+    prompt = f"""
+You are acting ONLY as the Coding Agent.
+
+## PROJECT RULES
+{project_rules}
+
+## CODING AGENT RULES
+{coding_rules}
+
+## TASK
+{task}
+
+## CURRENT FILE
+{current_code}
+
+Modify only `{TARGET_FILE}`.
+
+Return the complete updated Python file between these exact markers:
+
+<<<FILE>>>
+complete updated Python file
+<<<END_FILE>>>
+
+Do not perform testing.
+Do not perform code review.
+Do not commit or push.
+Do not modify unrelated files.
+"""
+
+    print("\n=== CODING AGENT ===")
+
+    response = run_qwen(prompt)
+    print(response)
+
+    return response
+def run_test_agent():
+    test_rules = read_file("agents/TEST_AGENT.md")
+    project_rules = read_file("AGENTS.md")
+    task = read_file("task.md")
+    current_code = read_file(TARGET_FILE)
+
+    prompt = f"""
+You are acting ONLY as the Test Agent.
+
+## PROJECT RULES
+{project_rules}
+
+## TEST AGENT RULES
+{test_rules}
+
+## TASK
+{task}
+
+## CURRENT FILE
+{current_code}
+
+Your job is to verify the implementation.
+
+Do not modify code.
+Do not perform code review.
+Do not commit or push.
+
+Return exactly one final status on its own line:
+
+PASS
+FAIL
+BLOCKED
+"""
+
+    print("\n=== TEST AGENT ===")
+
+    response = run_qwen(prompt)
+    print(response)
+
+    lines = [line.strip() for line in response.splitlines() if line.strip()]
+
+    for line in reversed(lines):
+        if line in {"PASS", "FAIL", "BLOCKED"}:
+            return line
+
+    return "BLOCKED"
+def run_git_agent():
+    git_rules = read_file("agents/GIT_AGENT.md")
+    project_rules = read_file("AGENTS.md")
+
+    print("\n=== GIT AGENT ===")
+    print("Git Agent rules loaded.")
+
+    commit_success = create_git_commit()
+
+    if not commit_success:
+        print("Git Agent Status: FAILED")
+        return "FAILED"
+
+    push_success = push_to_remote()
+
+    if not push_success:
+        print("Git Agent Status: FAILED")
+        return "FAILED"
+
+    print("Git Agent Status: COMPLETE")
+    return "COMPLETE"
 
 def extract_code(response):
     start_marker = "<<<FILE>>>"
@@ -282,105 +387,80 @@ def close_github_issue(issue_url):
 
 
 def main():
-    project_rules = read_file("AGENTS.md")
-    pipeline_rules = read_file("agents/PIPELINE.md")
     task = read_file("task.md")
     current_code = read_file(TARGET_FILE)
+
     issue_url = create_github_issue()
 
     if not issue_url:
-       print("Pipeline Status: ISSUE CREATION FAILED")
-       return
+        print("Pipeline Status: ISSUE CREATION FAILED")
+        return
 
     print("=== PRE-VERIFICATION ===")
 
-    if verify_app():
-        print("Current implementation already passes verification.")
-        add_issue_comment(
-        issue_url,
-        "Progress Update\n\n- Verification: PASS\n- Current Status: READY FOR REVIEW"
-    )
+    if not verify_app():
+        print("Current implementation does not pass verification.")
 
-        review_decision = run_code_review()
-        add_issue_comment(
-    issue_url,
-    f"Progress Update\n\n- Review Decision: {review_decision}\n- Current Status: REVIEW COMPLETED"
-)
-
-        print(f"\nReview Decision: {review_decision}")
-
-        if review_decision == "APPROVE":
-            commit_success = create_git_commit()
-
-            if commit_success:
-                push_success = push_to_remote()
-
-                if push_success:
-                    add_issue_comment(
-                        issue_url,
-                        "Progress Update\n\n- Commit: SUCCESS OR SKIPPED\n- Push: SUCCESS\n- Current Status: READY TO CLOSE"
-                    )
-
-                    close_github_issue(issue_url)
-
-                    print("Pipeline Status: COMPLETE")
-                else:
-                    print("Pipeline Status: PUSH FAILED")
-            else:
-                print("Pipeline Status: COMMIT FAILED")
-
-        elif review_decision == "REQUEST CHANGES":
-            print("Pipeline Status: CHANGES REQUESTED")
-
-        else:
-            print("Pipeline Status: BLOCKED")
-
-        return
-
-    print("Current implementation does not pass verification.")
-
-    prompt = f"""
-## PROJECT RULES
-{project_rules}
-
-## PIPELINE RULES
-{pipeline_rules}
-
-## TASK
-{task}
-
-## CURRENT FILE
-{current_code}
-
-Modify only `{TARGET_FILE}`.
-
-Return the complete updated file between these exact markers:
-
-<<<FILE>>>
-complete Python file here
-<<<END_FILE>>>
-
-Do not include markdown code fences inside the markers.
-Keep the change minimal.
-Do not modify unrelated behavior.
-"""
-
-    print("=== CODING AGENT ===")
-
-    response = run_qwen(prompt)
-
-    print(response)
-
-    new_code = extract_code(response)
-
-    apply_code_change(new_code)
+        response = run_coding_agent(task, current_code)
+        new_code = extract_code(response)
+        apply_code_change(new_code)
 
     verification_passed = verify_app()
 
-    if verification_passed:
-        print("\nPipeline Status: READY FOR REVIEW")
-    else:
+    if not verification_passed:
         print("\nPipeline Status: VERIFICATION FAILED")
+        return
+
+    add_issue_comment(
+        issue_url,
+        "Progress Update\n\n- Verification: PASS\n- Current Status: READY FOR TESTING"
+    )
+
+    test_status = run_test_agent()
+
+    if test_status != "PASS":
+        if test_status == "FAIL":
+            print("\nPipeline Status: TEST AGENT FAILED")
+        else:
+            print("\nPipeline Status: TEST AGENT BLOCKED")
+        return
+
+    add_issue_comment(
+        issue_url,
+        "Progress Update\n\n- Test Agent: PASS\n- Current Status: READY FOR REVIEW"
+    )
+
+    review_decision = run_code_review()
+
+    add_issue_comment(
+        issue_url,
+        f"Progress Update\n\n- Review Decision: {review_decision}\n- Current Status: REVIEW COMPLETED"
+    )
+
+    print(f"\nReview Decision: {review_decision}")
+
+    if review_decision == "REQUEST CHANGES":
+        print("\nPipeline Status: CHANGES REQUESTED")
+        return
+
+    if review_decision == "BLOCKED":
+        print("\nPipeline Status: BLOCKED")
+        return
+
+    git_status = run_git_agent()
+
+    if git_status != "COMPLETE":
+        print("\nPipeline Status: GIT AGENT FAILED")
+        return
+
+    add_issue_comment(
+        issue_url,
+        "Progress Update\n\n- Git Agent: COMPLETE\n- Current Status: READY TO CLOSE"
+    )
+
+    close_github_issue(issue_url)
+
+    print("\nPipeline Status: COMPLETE")
 
 
 if __name__ == "__main__":
