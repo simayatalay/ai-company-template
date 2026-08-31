@@ -108,6 +108,24 @@ BLOCKED
             return line
 
     return "BLOCKED"
+def run_browser_test():
+    result = subprocess.run(
+        ["python3", "browser-test/test_browser.py"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
+
+    print("\n=== BROWSER TEST ===")
+    print(result.stdout)
+
+    if result.returncode == 0 and "Browser Test Result: PASS" in result.stdout:
+        print("Browser Test Status: PASS")
+        return True
+
+    print(result.stderr)
+    print("Browser Test Status: FAIL")
+    return False
 def run_git_agent():
     git_rules = read_file("agents/GIT_AGENT.md")
     project_rules = read_file("AGENTS.md")
@@ -192,6 +210,7 @@ def run_code_review():
     project_rules = read_file("AGENTS.md")
     task = read_file("task.md")
     diff = get_git_diff()
+    current_code = read_file(TARGET_FILE)
 
     prompt = f"""
 You are acting ONLY as the Code Review Agent.
@@ -207,6 +226,9 @@ You are acting ONLY as the Code Review Agent.
 
 ## CODE CHANGE
 {diff}
+
+## CURRENT IMPLEMENTATION
+{current_code}
 
 Verification has already passed.
 
@@ -411,10 +433,18 @@ def main():
         print("\nPipeline Status: VERIFICATION FAILED")
         return
 
+    browser_test_passed = run_browser_test()
+
+    if not browser_test_passed:
+        print("\nPipeline Status: BROWSER TEST FAILED")
+        return
+
     add_issue_comment(
         issue_url,
         "Progress Update\n\n- Verification: PASS\n- Current Status: READY FOR TESTING"
-    )
+)
+
+
 
     test_status = run_test_agent()
 
