@@ -1,191 +1,160 @@
 # Engineering Influences
 
-This document records engineering ideas, methods, and principles
-that may influence the AI coding standards developed in this project.
+This document records external ideas, practices, and engineering principles
+that may influence the template.
 
-The goal is not to copy every idea directly into `AGENTS.md`.
+The purpose is not to copy sources directly into project rules.
 
-Instead, external ideas should be:
+Instead, useful ideas should be:
 
-1. Collected
-2. Understood
-3. Converted into candidate rules
-4. Tested when possible
-5. Promoted only if they improve AI coding behavior
+1. identified,
+2. understood,
+3. interpreted,
+4. tested when practical,
+5. integrated only when they improve the template.
 
 ---
 
-# 1. Andrej Karpathy
+# Influence Entry Format
 
-## Main Ideas
+## INF-XXX - Influence Title
 
-Relevant ideas include:
+**Source:**
+Person, organization, article, documentation, talk, or project.
 
-- Keep AI instructions clear and explicit.
-- Give AI enough context to understand the task.
-- Break complex problems into smaller steps.
-- Review AI-generated code rather than accepting it blindly.
-- Use verification as part of AI-assisted development.
+**Main Idea:**
+What engineering idea is being proposed?
 
-## Relevance to This Project
+**General Interpretation:**
+What reusable principle can be extracted?
 
-These ideas support the project's existing principles:
+**Potential Template Impact:**
+Which part of the template could be influenced?
+
+Examples:
+
+- `AGENTS.md`
+- agent role definitions
+- testing rules
+- review rules
+- repository workflow
+- documentation structure
+- orchestration
+- verification requirements
+
+**Status:**
+OBSERVED / RESEARCHING / TESTING / ADOPTED / REJECTED
+
+**Evidence:**
+What supports the decision to adopt or reject the idea?
+
+---
+
+# General Influence Areas
+
+External ideas may influence areas such as:
+
+## Context Before Action
+
+Agents should understand the relevant task, files, constraints, and expected
+outcome before making changes.
+
+Possible template impact:
 
 - Think Before Coding
-- Goal-Driven Execution
-- Verification
-- Human review
-
-## Candidate Rules
-
-### KARPATHY-CR-001
-
-Before implementing a complex task, the agent should first understand
-the relevant context and create a short plan.
-
-Status: CANDIDATE
-
-### KARPATHY-CR-002
-
-AI-generated code should not be considered correct solely because
-it appears plausible.
-
-Relevant verification should be performed.
-
-Status: CANDIDATE
+- scope control
+- planning requirements
+- context gathering
 
 ---
 
-# 2. Rob Pike
-
-## Main Ideas
-
-Relevant engineering themes include:
-
-- Simplicity is preferable to unnecessary complexity.
-- Clear code is more valuable than clever code.
-- Abstractions should have a real purpose.
-- Understand the problem before introducing complexity.
-
-## Relevance to This Project
-
-These ideas strongly support the existing `Simplicity First` principle.
-
-## Candidate Rules
-
-### PIKE-CR-001
+## Simplicity
 
 Prefer the simplest implementation that correctly solves the requested
 problem.
 
-Status: CANDIDATE
+Avoid unnecessary abstractions, dependencies, or premature optimization.
 
-### PIKE-CR-002
+Possible template impact:
 
-Do not introduce an abstraction unless it provides a clear benefit.
-
-Status: CANDIDATE
-
----
-
-# 3. Rich Hickey
-
-## Main Ideas
-
-Relevant engineering themes include:
-
-- Simple and easy are not the same thing.
-- Complexity often comes from unnecessary coupling.
-- Systems should avoid mixing unrelated responsibilities.
-- Good design attempts to keep concepts independent.
-
-## Relevance to This Project
-
-These ideas can help AI agents avoid creating unnecessary dependencies
-between parts of a codebase.
-
-## Candidate Rules
-
-### HICKEY-CR-001
-
-Avoid unnecessarily coupling independent responsibilities.
-
-Status: CANDIDATE
-
-### HICKEY-CR-002
-
-When evaluating a solution, consider structural simplicity rather than
-only ease of implementation.
-
-Status: CANDIDATE
+- Simplicity First
+- code review criteria
+- coding agent instructions
 
 ---
 
-# 4. Kent Beck
+## Small and Verifiable Changes
 
-## Main Ideas
+Prefer small changes that can be independently understood, tested, and
+reviewed.
 
-Relevant engineering themes include:
-
-- Make changes in small steps.
-- Use tests to create confidence.
-- Keep feedback loops short.
-- Improve design incrementally.
-- Prefer changes that are easy to verify.
-
-## Relevance to This Project
-
-These ideas support:
+Possible template impact:
 
 - Surgical Changes
-- Verification
-- Testing
-- Incremental implementation
-
-## Candidate Rules
-
-### BECK-CR-001
-
-Prefer small, independently verifiable changes over large changes.
-
-Status: CANDIDATE
-
-### BECK-CR-002
-
-When behavior changes, determine whether an appropriate test should
-also be added or updated.
-
-Status: CANDIDATE
+- testing
+- review
+- commit discipline
 
 ---
 
-# 5. Alican Kiraz
+## Independent Verification
 
-## Research Status
+Generated code should not be considered correct only because it appears
+plausible.
 
-Research on Alican Kiraz's engineering and AI-assisted development
-practices will be collected separately before creating permanent rules.
+Use executable tests, observable evidence, or independent review whenever
+possible.
 
-Ideas attributed to an individual should not become project rules
-without sufficient evidence or a reliable source.
+Possible template impact:
 
-## Candidate Rules
-
-No rule has been promoted yet.
-
-Status: RESEARCH REQUIRED
+- Test Agent
+- Code Review Agent
+- pipeline quality gates
 
 ---
 
-# Influence Evaluation Process
+## Separation of Responsibilities
 
-An external idea should move through the following process:
+Implementation, testing, review, and repository operations should be
+separated when practical.
+
+Possible template impact:
+
+- specialized agents
+- orchestration
+- clearer failure ownership
+- safer repository operations
+
+---
+
+## Traceable Work
+
+Important work should leave a trace that explains:
+
+- what problem was addressed,
+- what changed,
+- how it was tested,
+- how it was reviewed,
+- and how it was resolved.
+
+Possible template impact:
+
+- issue-driven development
+- Git history
+- progress comments
+- decision records
+
+---
+
+# Influence Integration Process
 
 INFLUENCE
     ↓
 RESEARCH
     ↓
-CANDIDATE RULE
+INTERPRETATION
+    ↓
+CANDIDATE PRACTICE
     ↓
 EXPERIMENT
     ↓
@@ -193,31 +162,38 @@ LESSON
     ↓
 DECISION
     ↓
-PROMOTED RULE
-    ↓
-AGENTS.md
+TEMPLATE INTEGRATION
 
-Not every candidate rule should reach the final stage.
+Not every external idea should become a permanent rule.
 
-A candidate may be:
+An idea may be:
 
-- accepted,
+- adopted,
 - modified,
 - rejected,
-- kept for further testing.
+- or kept for further research.
 
 ---
 
 # Promotion Criteria
 
-Before an external idea becomes a general rule, ask:
+Before integrating an external idea into the base template, ask:
 
-1. Does the rule solve a recurring problem?
-2. Is it useful beyond one specific task?
-3. Can the agent understand and follow it?
-4. Does it improve the resulting code or workflow?
-5. Does it conflict with another rule?
-6. Can its usefulness be demonstrated through experiments?
+1. Does it solve a recurring engineering problem?
+2. Is it useful beyond one specific project?
+3. Can different developers or agents understand it?
+4. Does it improve reliability, clarity, or maintainability?
+5. Can its usefulness be supported by evidence?
+6. Does it avoid unnecessary tool or vendor dependence?
 
-If the answer is sufficiently positive, the rule may be considered
-for promotion into `AGENTS.md`.
+If the answers are sufficiently positive, the idea may be integrated into
+the appropriate template component.
+
+---
+
+# Template Principle
+
+The base template should contain reusable engineering principles rather than
+person-specific or tool-specific instructions.
+
+Sources may inspire the template, but the final rule should stand on its own.

@@ -22,11 +22,20 @@ During implementation:
 - Do not modify documentation unless it is genuinely required.
 - Do not perform Git commit or push operations.
 - Do not perform the final code review.
+- Keep the change traceable to the original task or issue.
+- If the task is unclear or required context is missing, report `BLOCKED` instead of guessing.
 
 ## Output
 
 After implementation, report:
 
+- Files changed
+- Brief summary of the implementation
+- Any important assumptions
+- Status
+After implementation, report:
+
+- Task or issue reference
 - Files changed
 - Brief summary of the implementation
 - Any important assumptions

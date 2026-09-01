@@ -1,14 +1,15 @@
 # Lessons Learned
 
-This document records lessons learned from experiments, failures,
-successes, and observations during the development of this project.
+This document records reusable lessons discovered during development,
+testing, review, and maintenance.
 
-The purpose is to convert practical experience into reusable knowledge.
+The purpose is to convert practical experience into reusable engineering
+knowledge.
 
-A lesson is not automatically a permanent rule.
+A lesson is not automatically a permanent project rule.
 
-Lessons may later become candidate rules and, after evaluation,
-may be promoted into the project's AI engineering standards.
+Lessons may later become candidate rules and, after sufficient evidence,
+may be promoted into project standards.
 
 ---
 
@@ -43,70 +44,60 @@ OBSERVED / CONFIRMED / REJECTED / PROMOTED
 **Type:**
 GENERAL / SPECIFIC
 
-**Experiment:**
-What were we testing?
+**Context:**
+What situation produced this lesson?
 
 **Expected Behavior:**
-What did we expect the AI agent to do?
+What was expected to happen?
 
 **Observed Behavior:**
 What actually happened?
 
 **Lesson:**
-What did we learn?
+What reusable knowledge was learned?
 
 **Candidate Rule:**
-What possible rule can be derived from this lesson?
+What possible engineering rule could be derived?
 
 **Evidence:**
 What evidence supports this lesson?
 
 **Related Research:**
-Relevant `RESEARCH.md` entry.
+Relevant `RESEARCH.md` entry, if any.
 
 **Related Decision:**
-Relevant `DECISIONS.md` entry.
+Relevant `DECISIONS.md` entry, if any.
 
 **Next Action:**
-What should be tested or changed next?
-
----
-
-# Lessons
-
-No AI coding experiments have been completed yet.
-
-The first lessons will be recorded after the initial Claude Code
-experiment.
+What should be tested, changed, or investigated next?
 
 ---
 
 # Lesson Classification
 
-## SPECIFIC LESSON
+## Specific Lesson
 
-A lesson that applies only to:
+A specific lesson applies only to a limited context, such as:
 
 - one task,
 - one project,
 - one technology,
-- one AI model,
-- or one unusual situation.
+- one tool,
+- or one unusual environment.
 
-Specific lessons should normally remain in this document.
+Specific lessons should normally remain observations until there is
+evidence that they apply more broadly.
 
----
+## General Lesson
 
-## GENERAL LESSON
-
-A lesson that appears useful across:
+A general lesson appears useful across:
 
 - multiple tasks,
 - multiple projects,
-- multiple AI agents,
-- or multiple experiments.
+- multiple tools or agents,
+- or multiple environments.
 
-General lessons may become candidate rules.
+General lessons may become candidate engineering rules.
 
 ---
 
@@ -115,49 +106,36 @@ General lessons may become candidate rules.
 A lesson should not become a permanent rule after a single observation
 unless the evidence is especially strong.
 
-Prefer repeated evidence.
+Prefer repeated and independent evidence.
 
-Example:
+Before promoting a lesson, ask:
 
-Experiment 1:
-Agent modified unrelated code.
-
-Experiment 2:
-Agent modified unrelated code again.
-
-Experiment 3:
-Explicit scope instructions prevented unrelated changes.
-
-Possible general lesson:
-Explicit scope boundaries improve change discipline.
-
-Possible candidate rule:
-Before implementation, identify which files and behaviors are inside
-and outside the requested scope.
+- Has the behavior been observed more than once?
+- Does the lesson apply beyond one specific project?
+- Would the rule improve consistency or reliability?
+- Could the rule create unnecessary restrictions?
 
 ---
 
 # Failed Experiments
 
-Failed experiments must also be documented.
+Failed experiments should also be documented.
 
-A failed experiment can provide valuable information about:
+They may reveal problems such as:
 
 - unclear instructions,
-- ineffective rules,
-- model limitations,
 - missing context,
-- verification problems,
+- ineffective rules,
 - tool limitations,
+- verification problems,
+- environment dependencies,
 - or incorrect assumptions.
 
-Do not delete or hide negative results.
+Negative results should not be hidden or discarded.
 
 ---
 
 # Evidence Levels
-
-Lessons may use the following evidence levels:
 
 ## LOW
 
@@ -173,64 +151,17 @@ May justify a candidate rule.
 
 ## HIGH
 
-Observed consistently across different tasks, agents, or environments.
+Observed consistently across different tasks, tools, agents, or
+environments.
 
-Strong candidate for becoming a general rule.
+Strong candidate for becoming a general engineering rule.
 
 ---
 
-# Example Future Lesson
+# Lessons
 
-## LESSON-001 - Explicit Scope Reduces Unrelated Changes
+Add validated project lessons below this section as they are discovered.
 
-**Status:**
-OBSERVED
-
-**Type:**
-GENERAL
-
-**Experiment:**
-Ask an AI agent to modify only the `greet_user()` function.
-
-**Expected Behavior:**
-Only code required for the requested behavior should change.
-
-**Observed Behavior:**
-To be recorded after the experiment.
-
-**Lesson:**
-To be determined.
-
-**Candidate Rule:**
-To be determined.
-
-**Evidence:**
-LOW
-
-**Related Research:**
-RES-001
-RES-002
-
-**Related Decision:**
-DEC-007
-
-**Next Action:**
-Repeat the experiment with multiple agents.
-## Lesson: Documentation paths must be consistent
-
-During the first live agent evaluation, the evaluation command expected
-`docs/DECISIONS.md`, but the actual file was named `docs/DESICIONS.md`.
-
-This caused part of the project context to be unavailable to the agent.
-
-### Learning
-
-Agent infrastructure depends on consistent file names and documentation paths.
-A small naming mismatch can prevent an agent from receiving important project context.
-
-### Action
-
-The file was renamed from `DESICIONS.md` to `DECISIONS.md`.
-
-Future evaluation runs should verify that all required context files exist
-before invoking the agent.
+The base template should remain general.
+Project-specific lessons may be added only after the template is adopted
+for a particular project.

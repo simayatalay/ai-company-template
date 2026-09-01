@@ -22,6 +22,9 @@ During the review, evaluate:
 - Verification and testing
 - Documentation requirements
 - Compliance with the project's Definition of Done
+- Whether required verification actually covers the changed behavior
+- Whether important environment-specific risks remain untested
+- Whether the change is traceable to the original task or issue
 
 ## Review Rules
 
@@ -31,6 +34,9 @@ During the review, evaluate:
 - Distinguish blocking issues from optional improvements.
 - Do not request unnecessary refactoring.
 - Follow project rules over personal preference.
+- Do not approve when required verification evidence is missing or insufficient.
+- Do not approve unrelated changes that are outside the requested scope.
+- Treat environment limitations as review evidence when they affect confidence in the result.
 
 ## Output Format
 

@@ -2,10 +2,24 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parent.parent
-TARGET_FILE = "test-project/app.py"
 
-EXPECTED_GREETING = "Hello, Simay! Welcome to the project."
+CONFIG = {
+    "task_file": "task.md",
+    "target_file": "test-project/app.py",
+    "browser_test_file": "browser-test/test_browser.py",
+    "desktop_test_file": "desktop-test/test_desktop.py",
+    "remote_name": "origin",
+    "remote_branch": "main",
+    "commit_message": "Apply approved pipeline changes",
+}
 
+TASK_FILE = CONFIG["task_file"]
+TARGET_FILE = CONFIG["target_file"]
+BROWSER_TEST_FILE = CONFIG["browser_test_file"]
+DESKTOP_TEST_FILE = CONFIG["desktop_test_file"]
+REMOTE_NAME = CONFIG["remote_name"]
+REMOTE_BRANCH = CONFIG["remote_branch"]
+COMMIT_MESSAGE = CONFIG["commit_message"]
 
 def read_file(path):
     return (ROOT / path).read_text()
@@ -65,7 +79,7 @@ Do not modify unrelated files.
 def run_test_agent():
     test_rules = read_file("agents/TEST_AGENT.md")
     project_rules = read_file("AGENTS.md")
-    task = read_file("task.md")
+    task = read_file(TASK_FILE)
     current_code = read_file(TARGET_FILE)
 
     prompt = f"""
@@ -108,9 +122,10 @@ BLOCKED
             return line
 
     return "BLOCKED"
+
 def run_browser_test():
     result = subprocess.run(
-        ["python3", "browser-test/test_browser.py"],
+        ["python3", BROWSER_TEST_FILE],
         cwd=ROOT,
         text=True,
         capture_output=True
@@ -122,9 +137,15 @@ def run_browser_test():
     if result.returncode == 0 and "Browser Test Result: PASS" in result.stdout:
         print("Browser Test Status: PASS")
         return True
+
+    print(result.stderr)
+    print("Browser Test Status: FAIL")
+    return False
+
+
 def run_desktop_test():
     result = subprocess.run(
-        ["python3", "desktop-test/test_desktop.py"],
+        ["python3", DESKTOP_TEST_FILE],
         cwd=ROOT,
         text=True,
         capture_output=True
@@ -140,6 +161,7 @@ def run_desktop_test():
     print(result.stderr)
     print("Desktop Test Status: FAIL")
     return False
+   
     print(result.stderr)
     print("Browser Test Status: FAIL")
     return False
@@ -195,22 +217,19 @@ def apply_code_change(new_code):
 
 def verify_app():
     result = subprocess.run(
-        ["python3", TARGET_FILE],
+        ["python3", "-m", "py_compile", TARGET_FILE],
         cwd=ROOT,
-        input="Simay\n",
         text=True,
         capture_output=True
     )
 
-    output = result.stdout.strip()
-
     print("\n=== VERIFICATION ===")
-    print(output)
 
-    if EXPECTED_GREETING in output:
+    if result.returncode == 0:
         print("Verification Result: PASS")
         return True
 
+    print(result.stderr)
     print("Verification Result: FAIL")
     return False
 def get_git_diff():
@@ -226,7 +245,7 @@ def get_git_diff():
 def run_code_review():
     review_rules = read_file("agents/CODE_REVIEW.md")
     project_rules = read_file("AGENTS.md")
-    task = read_file("task.md")
+    task = read_file(TASK_FILE)
     diff = get_git_diff()
     current_code = read_file(TARGET_FILE)
 
@@ -294,7 +313,7 @@ def create_git_commit():
     )
 
     result = subprocess.run(
-        ["git", "commit", "-m", "Update greeting through AI pipeline"],
+       ["git", "commit", "-m", COMMIT_MESSAGE],
         cwd=ROOT,
         text=True,
         capture_output=True
@@ -312,25 +331,7 @@ def create_git_commit():
     return False
 def push_to_remote():
     result = subprocess.run(
-        ["git", "push", "origin", "main"],
-        cwd=ROOT,
-        text=True,
-        capture_output=True
-    )
-
-    print("\n=== GIT PUSH ===")
-    print(result.stdout)
-
-    if result.returncode == 0:
-        print("Push Result: SUCCESS")
-        return True
-
-    print(result.stderr)
-    print("Push Result: FAIL")
-    return False
-def push_to_remote():
-    result = subprocess.run(
-        ["git", "push", "origin", "main"],
+        ["git", "push", REMOTE_NAME, REMOTE_BRANCH],
         cwd=ROOT,
         text=True,
         capture_output=True
@@ -427,7 +428,7 @@ def close_github_issue(issue_url):
 
 
 def main():
-    task = read_file("task.md")
+    task = read_file(TASK_FILE)
     current_code = read_file(TARGET_FILE)
 
     issue_url = create_github_issue()
