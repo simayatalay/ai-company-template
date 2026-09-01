@@ -122,10 +122,28 @@ def run_browser_test():
     if result.returncode == 0 and "Browser Test Result: PASS" in result.stdout:
         print("Browser Test Status: PASS")
         return True
+def run_desktop_test():
+    result = subprocess.run(
+        ["python3", "desktop-test/test_desktop.py"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True
+    )
 
+    print("\n=== DESKTOP TEST ===")
+    print(result.stdout)
+
+    if result.returncode == 0 and "Desktop Test Result: PASS" in result.stdout:
+        print("Desktop Test Status: PASS")
+        return True
+
+    print(result.stderr)
+    print("Desktop Test Status: FAIL")
+    return False
     print(result.stderr)
     print("Browser Test Status: FAIL")
     return False
+
 def run_git_agent():
     git_rules = read_file("agents/GIT_AGENT.md")
     project_rules = read_file("AGENTS.md")
@@ -438,10 +456,15 @@ def main():
     if not browser_test_passed:
         print("\nPipeline Status: BROWSER TEST FAILED")
         return
+    desktop_test_passed = run_desktop_test()
+
+    if not desktop_test_passed:
+        print("\nPipeline Status: DESKTOP TEST FAILED")
+        return
 
     add_issue_comment(
         issue_url,
-        "Progress Update\n\n- Verification: PASS\n- Current Status: READY FOR TESTING"
+        "Progress Update\n\n- Verification: PASS\n- Browser Test: PASS\n- Desktop Test: PASS\n- Current Status: READY FOR TESTING"
 )
 
 
