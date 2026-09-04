@@ -1,0 +1,418 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui version="4.0">
+ <class>InstitutionPluginTemplateDialogBase</class>
+ <widget class="QDialog" name="InstitutionPluginTemplateDialogBase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Institution Plugin Template - Widget Examples</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <layout class="QVBoxLayout" name="examplesLayout">
+       <item>
+        <widget class="QLabel" name="titleLabel">
+         <property name="text">
+          <string>QGIS Plugin Widget Examples</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelExample">
+         <property name="text">
+          <string>QLabel Example: This is a label.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButtonExample">
+         <property name="text">
+          <string>QPushButton Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="openFileButton">
+         <property name="text">
+          <string>Open File</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="runExampleButton">
+         <property name="text">
+          <string>Run Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="clearButton">
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditExample">
+         <property name="placeholderText">
+          <string>QLineEdit Example - Enter text</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="comboBoxLabel">
+         <property name="text">
+          <string>QComboBox Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBoxExample">
+         <item>
+          <property name="text">
+           <string>Option 1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Option 2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Option 3</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxExample">
+         <property name="text">
+          <string>QCheckBox Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButtonExample">
+         <property name="text">
+          <string>QRadioButton Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="spinBoxLabel">
+         <property name="text">
+          <string>QSpinBox Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinBoxExample" />
+       </item>
+       <item>
+        <widget class="QLabel" name="doubleSpinBoxLabel">
+         <property name="text">
+          <string>QDoubleSpinBox Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBoxExample">
+         <property name="decimals">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="sliderLabel">
+         <property name="text">
+          <string>QSlider Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="sliderValueLabel">
+         <property name="text">
+          <string>Current Slider Value: 0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="sliderExample">
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="progressBarLabel">
+         <property name="text">
+          <string>QProgressBar Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="progressBarExample">
+         <property name="value">
+          <number>60</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="textEditExample">
+         <property name="placeholderText">
+          <string>QTextEdit Example - Enter multiple lines</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="listWidgetLabel">
+         <property name="text">
+          <string>QListWidget Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="listWidgetExample">
+         <item>
+          <property name="text">
+           <string>Buildings</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Roads</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Rivers</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Parcels</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tableWidgetLabel">
+         <property name="text">
+          <string>QTableWidget Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidgetExample">
+         <property name="rowCount">
+          <number>3</number>
+         </property>
+         <property name="columnCount">
+          <number>2</number>
+         </property>
+         <column>
+          <property name="text">
+           <string>Layer</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Features</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>Buildings</string>
+          </property>
+         </item>
+         <item row="0" column="1">
+          <property name="text">
+           <string>125</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>Roads</string>
+          </property>
+         </item>
+         <item row="1" column="1">
+          <property name="text">
+           <string>340</string>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>Rivers</string>
+          </property>
+         </item>
+         <item row="2" column="1">
+          <property name="text">
+           <string>42</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="dateEditLabel">
+         <property name="text">
+          <string>QDateEdit Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateEdit" name="dateEditExample">
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+         <property name="displayFormat">
+          <string>dd.MM.yyyy</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="timeEditLabel">
+         <property name="text">
+          <string>QTimeEdit Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTimeEdit" name="timeEditExample">
+         <property name="displayFormat">
+          <string>HH:mm:ss</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxExample">
+         <property name="title">
+          <string>QGroupBox Example - Analysis Settings</string>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>120</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="groupBoxLayout">
+          <item>
+           <widget class="QLabel" name="groupBoxInfoLabel">
+            <property name="text">
+             <string>Related widgets can be grouped inside this area.</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="groupBoxCheckBox">
+            <property name="text">
+             <string>Enable Example Setting</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="treeWidgetLabel">
+         <property name="text">
+          <string>QTreeWidget Example</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTreeWidget" name="treeWidgetExample">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>140</height>
+          </size>
+         </property>
+         <column>
+          <property name="text">
+           <string>Items</string>
+          </property>
+         </column>
+         <item>
+          <property name="text">
+           <string>Layers</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Buildings</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Roads</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Rivers</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Analysis</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Buffer</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Clip</string>
+           </property>
+          </item>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="button_box">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources />
+ <connections>
+  <connection>
+   <sender>button_box</sender>
+   <signal>accepted()</signal>
+   <receiver>InstitutionPluginTemplateDialogBase</receiver>
+   <slot>accept()</slot>
+  </connection>
+  <connection>
+   <sender>button_box</sender>
+   <signal>rejected()</signal>
+   <receiver>InstitutionPluginTemplateDialogBase</receiver>
+   <slot>reject()</slot>
+  </connection>
+ </connections>
+</ui>

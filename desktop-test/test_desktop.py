@@ -1,7 +1,20 @@
 import subprocess
+import time
 
 
 def run_desktop_test():
+    subprocess.run(
+        [
+            "osascript",
+            "-e",
+            'tell application "QGIS" to activate'
+        ],
+        text=True,
+        capture_output=True
+    )
+
+    time.sleep(2)
+
     result = subprocess.run(
         [
             "osascript",
@@ -16,7 +29,24 @@ def run_desktop_test():
 
     print(f"Active Application: {active_app}")
 
-    if active_app == "Code":
+    
+    window_result = subprocess.run(
+        [
+            "osascript",
+            "-e",
+            'tell application "System Events" to tell process "QGIS" to get name of every window'
+        ],
+        text=True,
+        capture_output=True
+    )
+
+    windows = window_result.stdout
+
+    print(f"QGIS Windows: {windows}")
+
+    expected_window = "Institution Plugin Template - Widget Examples"
+
+    if active_app == "QGIS" and expected_window in windows:
         print("Desktop Test Result: PASS")
         return True
 
